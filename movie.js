@@ -15,6 +15,7 @@ fetch(url, options)
   .then((response) => response.json())
   .then((response) => {
     movies = response.results;
+    console.log(movies);
     movies.forEach((e) => {
       let _id = e.id;
       let _poster = 'https://image.tmdb.org/t/p/w500' + e.poster_path;
@@ -23,9 +24,17 @@ fetch(url, options)
       let _rate = e.vote_average;
       let _releaseDate = e.release_date;
       createCard(_id, _poster, _title, _overview, _rate, _releaseDate);
+
+      const _movieCard = document.getElementById(_id);
+      _movieCard.addEventListener('click', clickCard);
     });
   })
   .catch((err) => console.error(err));
+
+function clickCard() {
+  const id = this.getAttribute('id');
+  window.alert(`id : ${id}`);
+}
 
 function createCard(_id, _poster, _title, _overview, _rate, _releaseDate) {
   const div = document.createElement('div');
