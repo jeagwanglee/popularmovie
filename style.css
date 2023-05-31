@@ -9,6 +9,10 @@ body {
   min-height: 100vh;
 }
 
+#mainTitle {
+  cursor: pointer;
+}
+
 #cardList {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
