@@ -15,18 +15,7 @@ fetch(url, options)
   .then((response) => response.json())
   .then((response) => {
     const movies = response.results;
-    movies.forEach((e) => {
-      let _id = e.id;
-      let _poster = 'https://image.tmdb.org/t/p/w500' + e.poster_path;
-      let _title = e.title;
-      let _overview = e.overview;
-      let _rate = e.vote_average;
-      let _releaseDate = e.release_date;
-
-      createCard(_id, _poster, _title, _overview, _rate, _releaseDate);
-      const _movieCard = document.getElementById(_id);
-      _movieCard.addEventListener('click', clickCard);
-    });
+    createCard(movies);
   })
   .catch((err) => console.error(err));
 
@@ -35,29 +24,44 @@ function clickCard() {
   window.alert(`id : ${id}`);
 }
 
-function createCard(_id, _poster, _title, _overview, _rate, _releaseDate) {
-  const div = document.createElement('div');
-  $cardList.appendChild(div);
-  div.className = 'movie-card';
-  div.id = _id;
-  const movieCard = document.getElementById(_id);
+function createCard(movies) {
+  movies.forEach((movie) => {
+    let _id = movie.id;
+    let _poster = 'https://image.tmdb.org/t/p/w500' + movie.poster_path;
+    let _title = movie.title;
+    let _overview = movie.overview;
+    let _rate = movie.vote_average;
+    let _releaseDate = movie.release_date;
 
-  const poster = document.createElement('img');
-  const title = document.createElement('h3');
-  const overview = document.createElement('p');
-  const rate = document.createElement('p');
-  const releaseDate = document.createElement('p');
-  poster.src = _poster;
-  title.innerText = _title;
-  overview.innerText = _overview;
-  rate.innerText = `평점 : ${_rate}`;
-  releaseDate.innerText = `개봉 : ${_releaseDate}`;
+    const div = document.createElement('div');
+    div.className = 'movie-card';
+    div.id = _id;
 
-  movieCard.appendChild(poster);
-  movieCard.appendChild(title);
-  movieCard.appendChild(overview);
-  movieCard.appendChild(rate);
-  movieCard.appendChild(releaseDate);
+    const poster = document.createElement('img');
+    poster.src = _poster;
+
+    const title = document.createElement('h3');
+    title.innerText = _title;
+
+    const overview = document.createElement('p');
+    overview.innerText = _overview;
+
+    const rate = document.createElement('p');
+    rate.innerText = `평점 : ${_rate}`;
+
+    const releaseDate = document.createElement('p');
+    releaseDate.innerText = `개봉 : ${_releaseDate}`;
+
+    $cardList.appendChild(div);
+    const movieCard = document.getElementById(_id);
+
+    movieCard.appendChild(poster);
+    movieCard.appendChild(title);
+    movieCard.appendChild(overview);
+    movieCard.appendChild(rate);
+    movieCard.appendChild(releaseDate);
+    movieCard.addEventListener('click', clickCard);
+  });
 }
 
 function searchMovie(input) {
@@ -65,17 +69,9 @@ function searchMovie(input) {
   fetch(url, options)
     .then((response) => response.json())
     .then((response) => {
-      movies = response.results;
-      const filteredMovies = movies.filter((e) => e.title.match(new RegExp(input, 'i')));
-      filteredMovies.forEach((e) => {
-        let _id = e.id;
-        let _poster = 'https://image.tmdb.org/t/p/w500' + e.poster_path;
-        let _title = e.title;
-        let _overview = e.overview;
-        let _rate = e.vote_average;
-        let _releaseDate = e.release_date;
-        createCard(_id, _poster, _title, _overview, _rate, _releaseDate);
-      });
+      const movies = response.results;
+      const filteredMovies = movies.filter((movie) => movie.title.match(new RegExp(input, 'i')));
+      createCard(filteredMovies);
     })
     .catch((err) => console.error(err));
 }
