@@ -1,5 +1,6 @@
 const $cardList = document.querySelector('#cardList');
 const $searchInput = document.querySelector('#searchInput');
+const url = 'https://api.themoviedb.org/3/movie/popular?language=ko&page=1';
 
 const options = {
   method: 'GET',
@@ -9,13 +10,11 @@ const options = {
       'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZTA1NGIwNTlmNjAyODg0MzM4Y2RiZjJmYWIxNWE3MyIsInN1YiI6IjY0NzA4ZDkzNzI2ZmIxMDEyMzBiMWQ2NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.mqGeqA8R2YIHQ7ylB2GYYpyAVvSxuBWpFkIi1MQal3Y',
   },
 };
-const url = 'https://api.themoviedb.org/3/movie/popular?language=ko&page=1';
 
 fetch(url, options)
   .then((response) => response.json())
   .then((response) => {
-    movies = response.results;
-    console.log(movies);
+    const movies = response.results;
     movies.forEach((e) => {
       let _id = e.id;
       let _poster = 'https://image.tmdb.org/t/p/w500' + e.poster_path;
@@ -23,8 +22,8 @@ fetch(url, options)
       let _overview = e.overview;
       let _rate = e.vote_average;
       let _releaseDate = e.release_date;
-      createCard(_id, _poster, _title, _overview, _rate, _releaseDate);
 
+      createCard(_id, _poster, _title, _overview, _rate, _releaseDate);
       const _movieCard = document.getElementById(_id);
       _movieCard.addEventListener('click', clickCard);
     });
@@ -85,4 +84,8 @@ document.querySelector('.search').addEventListener('submit', (event) => {
   event.preventDefault();
   const inputValue = $searchInput.value;
   searchMovie(inputValue);
+});
+
+document.getElementById('mainTitle').addEventListener('click', () => {
+  location.reload();
 });
