@@ -19,11 +19,6 @@ fetch(url, options)
   })
   .catch((err) => console.error(err));
 
-function clickCard() {
-  const id = this.getAttribute('id');
-  window.alert(`id : ${id}`);
-}
-
 function createCard(movies) {
   movies.forEach((movie) => {
     let _id = movie.id;
@@ -60,7 +55,9 @@ function createCard(movies) {
     movieCard.appendChild(overview);
     movieCard.appendChild(rate);
     movieCard.appendChild(releaseDate);
-    movieCard.addEventListener('click', clickCard);
+    movieCard.addEventListener('click', function () {
+      window.alert(`id : ${_id}`);
+    });
   });
 }
 
