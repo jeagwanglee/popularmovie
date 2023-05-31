@@ -21,43 +21,25 @@ fetch(url, options)
 
 function createCard(movies) {
   movies.forEach((movie) => {
-    let _id = movie.id;
-    let _poster = 'https://image.tmdb.org/t/p/w500' + movie.poster_path;
-    let _title = movie.title;
-    let _overview = movie.overview;
-    let _rate = movie.vote_average;
-    let _releaseDate = movie.release_date;
+    const { id, poster_path, title, overview, vote_average, release_date } = movie;
+    const posterUrl = `https://image.tmdb.org/t/p/w500${poster_path}`;
 
-    const div = document.createElement('div');
-    div.className = 'movie-card';
-    div.id = _id;
+    const movieCard = document.createElement('div');
+    movieCard.className = 'movie-card';
+    movieCard.id = id;
+    movieCard.innerHTML = `
+          <img src="${posterUrl}">
+          <h3>${title}</h3>
+          <p>${overview}</p>
+          <p>평점: ${vote_average}</p>
+          <p>개봉: ${release_date}</p>
+        `;
 
-    const poster = document.createElement('img');
-    poster.src = _poster;
-
-    const title = document.createElement('h3');
-    title.innerText = _title;
-
-    const overview = document.createElement('p');
-    overview.innerText = _overview;
-
-    const rate = document.createElement('p');
-    rate.innerText = `평점 : ${_rate}`;
-
-    const releaseDate = document.createElement('p');
-    releaseDate.innerText = `개봉 : ${_releaseDate}`;
-
-    $cardList.appendChild(div);
-    const movieCard = document.getElementById(_id);
-
-    movieCard.appendChild(poster);
-    movieCard.appendChild(title);
-    movieCard.appendChild(overview);
-    movieCard.appendChild(rate);
-    movieCard.appendChild(releaseDate);
-    movieCard.addEventListener('click', function () {
-      window.alert(`id : ${_id}`);
+    movieCard.addEventListener('click', () => {
+      window.alert(`id: ${id}`);
     });
+
+    $cardList.appendChild(movieCard);
   });
 }
 
